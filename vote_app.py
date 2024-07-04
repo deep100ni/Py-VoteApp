@@ -3,12 +3,15 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+
+def read_candidates(file_path='candidates.json'):
+    with open(file_path, 'r') as file:
+        candidates = json.load(file)
+    return candidates
+
+
 # Post -> Candidate dict
-data = {
-    "A": ["A143434", "A2", "A3"],
-    "B": ["B1", "B2"],
-    "C": ["C1", "C2", "C3", "C4"]
-}
+data = read_candidates()
 
 # To save user votes
 selected = {}
@@ -20,8 +23,8 @@ curr = -1
 window = tk.Tk()
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
-center_x = int(screen_width/2 - 500 / 2)
-center_y = int(screen_height/2 - 500 / 2)
+center_x = int(screen_width / 2 - 500 / 2)
+center_y = int(screen_height / 2 - 500 / 2)
 window.geometry(f"500x500+{center_x}+{center_y}")
 
 # Main frame
@@ -45,6 +48,7 @@ adm_no_end = 4000
 
 # current adm_no
 adm_no = 0
+
 
 def show_adm_no_input():
     global frame, adm_no_entry
@@ -71,6 +75,7 @@ def show_adm_no_input():
     start_btn = ttk.Button(master=frame, text="START", command=start)
     start_btn.pack(padx=padx, pady=pady)
 
+
 def adm_no_valid():
     global adm_no
 
@@ -89,6 +94,7 @@ def adm_no_valid():
 
     return True
 
+
 # Starts / Restarts the vote
 def start():
     global selected, curr
@@ -106,6 +112,7 @@ def start():
 
     # shows first page
     next_page()
+
 
 def display_base_layout():
     global window, frame, title_lbl, choices_fr, buttons_fr
@@ -127,6 +134,7 @@ def display_base_layout():
     buttons_fr = tk.Frame(frame)
     buttons_fr.pack(padx=padx, pady=pady)
 
+
 def next_page():
     global curr, data
 
@@ -143,6 +151,7 @@ def next_page():
     candidates = data[post]
     display(post, candidates)
 
+
 def prev_page():
     global curr, data
 
@@ -151,6 +160,7 @@ def prev_page():
     post = posts[curr]
     candidates = data[post]
     display(post, candidates)
+
 
 def display_buttons_layout():
     global buttons_fr
@@ -176,6 +186,7 @@ def display_buttons_layout():
     elif curr == last:
         submit_btn = ttk.Button(master=buttons_fr, text="SUBMIT", command=submit)
         submit_btn.grid(row=0, column=2, sticky="nsew", padx=padx, pady=pady)
+
 
 def display(post, candidates):
     global title_lbl, choices_fr
@@ -228,6 +239,7 @@ def display(post, candidates):
 
     display_buttons_layout()
 
+
 def save_zero_votes():
     votes = {}
     for (post, candidates) in data.items():
@@ -235,6 +247,7 @@ def save_zero_votes():
         for candidate in candidates:
             votes[post][candidate] = 0
     json.dump(votes, open("votes.json", "w"))
+
 
 def submit():
     post = list(data.keys())[curr]
@@ -253,10 +266,12 @@ def submit():
 
     finish_vote()
 
+
 def save_adm_no():
     adm_nos = json.load(open("adm_nos.json", "r"))
     adm_nos.append(adm_no)
     json.dump(adm_nos, open("adm_nos.json", "w"))
+
 
 def finish_vote():
     global frame
@@ -276,6 +291,7 @@ def finish_vote():
 
     start_btn = ttk.Button(master=frame, text="START AGAIN", command=show_adm_no_input)
     start_btn.pack()
+
 
 def clear_window():
     for child in frame.winfo_children():
