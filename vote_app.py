@@ -2,6 +2,7 @@ import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkmacosx import Button
 
 
 def read_candidates(file_path='candidates.json'):
@@ -26,6 +27,7 @@ screen_height = window.winfo_screenheight()
 center_x = int(screen_width / 2 - 500 / 2)
 center_y = int(screen_height / 2 - 500 / 2)
 window.geometry(f"500x500+{center_x}+{center_y}")
+window.configure(bg="lightblue")
 
 # Main frame
 frame = tk.Frame(window)
@@ -225,7 +227,7 @@ def display(post, candidates):
             foreground = "black"
 
         # Button for candidate
-        button = tk.Button(
+        button = Button(
             master=choices_fr,
             text=candidate,
             font=font,
